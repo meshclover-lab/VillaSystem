@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+">
+
+    <h2 style="color:green;">🎉 Booking Confirmed!</h2>
+
+    <p><strong>Villa:</strong> {{ booking.villa.name }}</p>
+    <p><strong>Location:</strong> {{ booking.villa.location }}</p>
+
+    <hr>
+
+    <p><strong>Guest Name:</strong> {{ booking.guest_name }}</p>
+    <p><strong>Email:</strong> {{ booking.guest_email }}</p>
+
+    <hr>
+
+    <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+    <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+
+    <hr>
+
+    <a href="{% url 'villa_list' %}">
+        <button style="
+            background:#ff385c;
+            color:white;
+            padding:10px 15px;
+            border:none;
+            border-radius:6px;
+        ">
+            Back to Home
+        </button>
+    </a>
+
+</div>
+
+{% endblock %}

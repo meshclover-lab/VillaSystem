@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-bg">
+    <div class="page-overlay">
+
+        <h1 style="margin-bottom: 20px;">Dashboard</h1>
+
+        <!-- ===================== -->
+        <!-- SUMMARY CARDS -->
+        <!-- ===================== -->
+        <div class="card-grid" style="margin-bottom: 30px;">
+
+            <div class="card">
+                <h2>{{ bookings|length }}</h2>
+                <p>Total Bookings</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ incidents|length }}</h2>
+                <p>Total Incidents</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ incidents|length }}</h2>
+                <p>Resolved + Pending</p>
+            </div>
+
+        </div>
+
+        <!-- ===================== -->
+        <!-- BOOKINGS TABLE -->
+        <!-- ===================== -->
+        <h2 style="margin-bottom: 10px;">Bookings</h2>
+
+        <table>
+            <tr>
+                <th>Guest</th>
+                <th>Email</th>
+                <th>Villa</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+            </tr>
+
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.guest_name }}</td>
+                <td>{{ booking.guest_email }}</td>
+                <td>{{ booking.villa.name }}</td>
+                <td>{{ booking.check_in_date }}</td>
+                <td>{{ booking.check_out_date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No bookings found</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br><br>
+
+        <!-- ===================== -->
+        <!-- INCIDENTS TABLE -->
+        <!-- ===================== -->
+        <h2 style="margin-bottom: 10px;">My Incidents</h2>
+
+        <table>
+            <tr>
+                <th>Villa</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+
+            {% for incident in incidents %}
+            <tr>
+                <td>{{ incident.villa.name }}</td>
+                <td>{{ incident.description }}</td>
+                <td>
+                    {% if incident.resolved %}
+                    <span class="badge success">Resolved</span>
+                    {% else %}
+                    <span class="badge danger">Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No incidents reported</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

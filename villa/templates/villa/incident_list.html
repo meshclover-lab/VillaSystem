@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-bg">
+    <div class="page-overlay">
+
+        <h1 style="margin-bottom: 20px;">Incidents</h1>
+
+        <table>
+            <tr>
+                <th>Villa</th>
+                <th>Description</th>
+                <th>Reported By</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Assigned Staff</th>
+
+                {% if user.is_staff %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+
+            {% for incident in incidents %}
+            <tr>
+                <td>{{ incident.villa.name }}</td>
+                <td>{{ incident.description }}</td>
+                <td>{{ incident.user.username }}</td>
+                <td>{{ incident.date_reported }}</td>
+
+                <!-- STATUS -->
+                <td>
+                    {% if incident.resolved %}
+                    <span class="badge success">Resolved</span>
+                    {% else %}
+                    <span class="badge danger">Pending</span>
+                    {% endif %}
+                </td>
+
+                <!-- ASSIGNED STAFF -->
+                <td>
+                    {% if incident.staff %}
+                    {{ incident.staff.name }} ({{ incident.staff.role }})
+                    {% else %}
+                    <span style="color:gray;">Not Assigned</span>
+                    {% endif %}
+                </td>
+
+                <!-- ADMIN ACTIONS -->
+                {% if user.is_staff %}
+                <td>
+
+                    {% if not incident.resolved %}
+                    <a href="{% url 'resolve_incident' incident.id %}">
+                        <button
+                            style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:6px;">
+                            Resolve
+                        </button>
+                    </a>
+                    {% endif %}
+
+                    <br><br>
+
+                    {% if not incident.staff %}
+                    <a href="{% url 'assign_staff' incident.id %}">
+                        <button
+                            style="background:#2563eb; color:white; border:none; padding:6px 10px; border-radius:6px;">
+                            Assign
+                        </button>
+                    </a>
+                    {% endif %}
+
+                </td>
+                {% endif %}
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No incidents found</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Watamu Holiday Villas</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f7f7f7;
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff385c;
+        }
+
+        .nav-links a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ff385c;
+        }
+
+        .nav-links form {
+            display: inline;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* ================= CONTENT ================= */
+        .container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* ================= CARDS ================= */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        /* ================= TABLES ================= */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f1f1f1;
+        }
+
+        /* ================= BACKGROUND FOR ADMIN PAGES ================= */
+        .page-bg {
+            background: url("/static/images/admin-bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        /* overlay so text is readable */
+        .page-overlay {
+            background: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <div class="navbar">
+        <div class="logo">Watamu Holiday Villas</div>
+
+        <div class="nav-links">
+            <a href="{% url 'villa_list' %}">Home</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+
+            {% if user.is_authenticated and user.is_staff %}
+            <a href="{% url 'admin_dashboard' %}">Analytics</a>
+            <a href="{% url 'incident_list' %}">Incidents</a>
+            <a href="{% url 'staff_list' %}">Staff</a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <span>Hi, {{ user.username }}</span>
+
+            <form action="/accounts/logout/" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            {% else %}
+            <a href="/accounts/login/">Login</a>
+            <a href="/signup/">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ================= CONTENT ================= -->
+    <div class="container">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</body>
+
+</html>

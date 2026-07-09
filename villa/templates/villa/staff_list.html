@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-bg">
+    <div class="page-overlay">
+
+        <h1 style="margin-bottom: 20px;">Staff Members</h1>
+
+        <!-- ===================== -->
+        <!-- ADD STAFF FORM -->
+        <!-- ===================== -->
+        {% if user.is_staff %}
+        <div class="card" style="margin-bottom: 30px; max-width: 500px;">
+
+            <h2>Add New Staff</h2>
+
+            <!-- THIS FORM SENDS DATA TO SAME PAGE -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="name" placeholder="Name" required
+                    style="width:100%; margin-bottom:10px; padding:8px;">
+
+                <input type="text" name="role" placeholder="Role" required
+                    style="width:100%; margin-bottom:10px; padding:8px;">
+
+                <input type="text" name="phone_number" placeholder="Phone Number" required
+                    style="width:100%; margin-bottom:10px; padding:8px;">
+
+                <select name="assigned_villa" style="width:100%; margin-bottom:10px; padding:8px;">
+                    <option value="">Assign Villa (Optional)</option>
+                    {% for villa in villas %}
+                    <option value="{{ villa.id }}">{{ villa.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit"
+                    style="background:#16a34a; color:white; border:none; padding:10px; border-radius:6px; width:100%;">
+                    Add Staff
+                </button>
+            </form>
+
+        </div>
+        {% endif %}
+
+        <!-- ===================== -->
+        <!-- STAFF TABLE -->
+        <!-- ===================== -->
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Assigned Villa</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for staff in staff_members %}
+            <tr>
+                <td>{{ staff.name }}</td>
+                <td>{{ staff.role }}</td>
+                <td>{{ staff.phone_number }}</td>
+
+                <td>
+                    {% if staff.assigned_villa %}
+                    {{ staff.assigned_villa.name }}
+                    {% else %}
+                    <span style="color:gray;">Not Assigned</span>
+                    {% endif %}
+                </td>
+
+                <!-- ACTIONS COLUMN -->
+                <td>
+
+                    <!-- EDIT BUTTON -->
+                    <a href="{% url 'edit_staff' staff.id %}">
+                        <button
+                            style="background:#2563eb; color:white; border:none; padding:5px 10px; border-radius:6px;">
+                            Edit
+                        </button>
+                    </a>
+
+                    <!-- DELETE BUTTON -->
+                    <a href="{% url 'delete_staff' staff.id %}">
+                        <button
+                            style="background:#dc2626; color:white; border:none; padding:5px 10px; border-radius:6px;">
+                            Delete
+                        </button>
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="5">No staff members found</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Report Incident for {{ villa.name }}</h2>
+
+<p><strong>Location:</strong> {{ villa.location }}</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Description:</label><br>
+    {{ form.description }}<br><br>
+
+    <button type="submit">Submit Incident</button>
+</form>
+
+<br>
+<a href="{% url 'villa_detail' villa.id %}">Back to Villa</a>
+
+{% endblock %}

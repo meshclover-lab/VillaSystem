@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- 🔥 HERO BANNER -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Find your perfect stay in Watamu</h1>
+        <p>Luxury villas, ocean views, unforgettable experiences</p>
+        <a href="#villas" class="hero-btn">Explore Villas</a>
+    </div>
+</div>
+
+<style>
+    /* ===================== */
+    /* HERO SECTION */
+    /* ===================== */
+    .hero {
+        height: 420px;
+        background: url('https://images.unsplash.com/photo-1505691938895-1758d7feb511') center/cover no-repeat;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        border-radius: 16px;
+    }
+
+    .hero-content {
+        position: relative;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .hero-btn {
+        background: #ff385c;
+        padding: 12px 22px;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .hero-btn:hover {
+        background: #e03150;
+    }
+
+    /* ===================== */
+    /* VILLA GRID (FIXED) */
+    /* ===================== */
+    .villa-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        /* 🔥 bigger cards */
+        gap: 30px;
+    }
+
+    /* ===================== */
+    /* CARD DESIGN */
+    /* ===================== */
+    .villa-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .villa-card:hover {
+        transform: translateY(-8px);
+    }
+
+    /* IMAGE BIGGER */
+    .villa-card img {
+        width: 100%;
+        height: 240px;
+        /* 🔥 increased */
+        object-fit: cover;
+    }
+
+    /* CONTENT */
+    .villa-content {
+        padding: 18px;
+    }
+
+    .villa-content h3 {
+        margin: 10px 0 5px;
+    }
+
+    .villa-content p {
+        margin: 0;
+        color: gray;
+    }
+
+    .price {
+        margin-top: 8px;
+        font-weight: bold;
+        color: black;
+    }
+
+    /* BUTTON */
+    .details-btn {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 10px 14px;
+        background: #ff385c;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .details-btn:hover {
+        background: #e03150;
+    }
+
+    /* ===================== */
+    /* RESPONSIVE */
+    /* ===================== */
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 30px;
+        }
+
+        .hero {
+            height: 300px;
+        }
+    }
+</style>
+
+<!-- 🔽 VILLA SECTION -->
+<h2 id="villas" style="margin-bottom: 20px;">Explore Villas</h2>
+
+<div class="villa-container">
+
+    {% for item in villa_status %}
+    <div class="villa-card">
+
+        {% if item.villa.image %}
+        <img src="{{ item.villa.image.url }}">
+        {% endif %}
+
+        <div class="villa-content">
+            <h3>{{ item.villa.name }}</h3>
+            <p>{{ item.villa.location }}</p>
+            <p class="price">${{ item.villa.price_per_night }} / night</p>
+
+            <a href="{% url 'villa_detail' item.villa.id %}" class="details-btn">
+                View Details
+            </a>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
